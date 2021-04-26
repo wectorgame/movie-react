@@ -44,10 +44,10 @@ export function fetchMovie(id) {
     dispatch(fetchLoading());
     try {
       const response = await axios.get(`
-      https://api.themoviedb.org/3/movie/${id}?api_key=3530db6266571e46af24f0807947603a`);
+      https://api.themoviedb.org/3/movie/${id}?api_key=${api_key}`);
       dispatch({ type: CURR_MOVIE_DATA, movieData: response.data });
     } catch (e) {
-      dispatch(fetchFilmsError);
+      dispatch(fetchFilmsError(e));
     }
   };
 }
@@ -58,16 +58,31 @@ export function fetchMovies(movies = []) {
       const responses = await Promise.all(
         movies.map((id) =>
           axios.get(`
-https://api.themoviedb.org/3/movie/${id}?api_key=3530db6266571e46af24f0807947603a`)
+https://api.themoviedb.org/3/movie/${id}?api_key=${api_key}`)
         )
       );
       const data = responses.map((elem) => elem.data);
       dispatch({ type: FAVORITES_DATA, favoritesData: data });
     } catch (e) {
-      dispatch(fetchFilmsError);
+      dispatch(fetchFilmsError(e));
     }
   };
 }
+export function fetchFilmsByGenre(id) {
+  return async (dispatch) => {
+    dispatch(searchClear());
+    dispatch(fetchLoading());
+    try {
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&with_genres=${id}`
+      );
+      dispatch(fetchFilmsSuccess(response.data.results));
+    } catch (e) {
+      dispatch(fetchFilmsError(e));
+    }
+  };
+}
+
 export function addFavorites(movie) {
   return { type: ADD_TO_FAVORITE, currentMovie: movie };
 }
