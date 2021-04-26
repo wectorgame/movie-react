@@ -1,25 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.scss";
+import { Component } from "react";
+import { Redirect, Route, Switch, withRouter } from "react-router";
+import Auth from "./components/Auth/Auth";
+import Films from "./components/Films/Films";
+import { connect } from "react-redux";
+import Layout from "./hoc/layout/Layout";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { autoLogin } from "./store/actions/auth";
+import Logout from "./components/Logout/Logout";
+import Series from "./components/Series/Series";
+import Favorite from "./components/Favorite/Favorite";
+import Film from "./components/Film/Film";
+class App extends Component {
+  componentDidMount() {
+    this.props.autoLogin();
+  }
+  render() {
+    let routes = (
+      <Switch>
+        <Route path="/auth" component={Auth} exact></Route>
+        <Redirect to="/auth"></Redirect>
+      </Switch>
+    );
+    if (this.props.isAuthenticated) {
+      routes = (
+        <Switch>
+          <Route path="/films" component={Films} exact />
+          <Route path="/series" component={Series} />
+          <Route path="/favorite" component={Favorite} />
+          <Route path="/profile/:name" component={Film}></Route>
+          <Route path="/logout" component={Logout}></Route>
+          <Redirect to="/films" component={Films} exact></Redirect>
+        </Switch>
+      );
+    }
+
+    return (
+      <>
+        <Layout>{routes}</Layout>
+      </>
+    );
+  }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    isAuthenticated: !!state.auth.token,
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    autoLogin: () => dispatch(autoLogin()),
+  };
+}
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
