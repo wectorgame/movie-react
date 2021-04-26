@@ -82,7 +82,20 @@ export function fetchFilmsByGenre(id) {
     }
   };
 }
-
+export function fetchFilmsByDate(date) {
+  return async (dispatch) => {
+    dispatch(searchClear());
+    dispatch(fetchLoading());
+    try {
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&primary_release_year=${date}`
+      );
+      dispatch(fetchFilmsSuccess(response.data.results));
+    } catch (e) {
+      dispatch(fetchFilmsError);
+    }
+  };
+}
 export function addFavorites(movie) {
   return { type: ADD_TO_FAVORITE, currentMovie: movie };
 }
