@@ -1,11 +1,13 @@
 import { Component } from "react";
+import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-class Navbar extends Component {
+class NavbarMovie extends Component {
   renderLinks(links) {
     return links.map((link, index) => {
       return (
-        <li key={index} className="nav-link">
+        <li key={index} className="nav-item">
           <NavLink
+            className="nav-link"
             to={link.to}
             label={link.label}
             exact={link.exact}
@@ -18,7 +20,7 @@ class Navbar extends Component {
     });
   }
   render() {
-    const cls = ["navbar", "navbar-expand-lg", " bg-dark"];
+    /* const cls = ["navbar", "navbar-expand-lg", "navbar-dark", " bg-dark"]; */
     const links = [];
     if (this.props.isAuthenticated) {
       links.push({ to: "/films", label: "Фильмы", exact: true });
@@ -29,10 +31,23 @@ class Navbar extends Component {
       links.push({ to: "/auth", label: "Добро пожаловать!", exact: true });
     }
     return (
-      <nav className={cls.join(" ")}>
-        <ul className="navbar-nav">{this.renderLinks(links)}</ul>
-      </nav>
+      <Navbar bg="light" expand="lg">
+  <Navbar.Toggle aria-controls="basic-navbar-nav" />
+  <Navbar.Collapse id="basic-navbar-nav">
+    <Nav className="mr-auto">
+    {this.renderLinks(links)}
+      
+    </Nav>
+   
+  </Navbar.Collapse>
+</Navbar>
+      /*  <nav className={cls.join(" ")}>
+        <NavbarToggle aria-controls="basic-navbar-nav"> </NavbarToggle>
+        <NavbarCollapse id="basic-navbar-nav">
+          <ul className="navbar-nav">{this.renderLinks(links)}</ul>
+        </NavbarCollapse>
+      </nav> */
     );
   }
 }
-export default Navbar;
+export default NavbarMovie;

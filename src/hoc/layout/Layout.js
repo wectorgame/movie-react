@@ -1,12 +1,12 @@
 import { Component } from "react";
 import { connect } from "react-redux";
-import Navbar from "../../components/Navbar";
+import NavbarMovie from "../../components/Navbar";
 
 class Layout extends Component {
   render() {
     return (
       <div className="Layout">
-        <Navbar isAuthenticated={this.props.isAuthenticated}></Navbar>
+        <NavbarMovie isAuthenticated={this.props.isAuthenticated}></NavbarMovie>
         <main className="container">{this.props.children}</main>
       </div>
     );
