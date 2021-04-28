@@ -33,11 +33,9 @@ class Films extends Component {
     this.props.searchValue(event.target.value);
   }
   dateSelectHandler = (event) => {
-    console.log(this.props);
     this.props.fetchFilmsByDate(event.target.value);
   };
   selectChangeHandler = (event) => {
-    console.log(this.props);
     this.props.fetchFilmsByGenre(event.target.value);
   };
 

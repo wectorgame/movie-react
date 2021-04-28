@@ -5,12 +5,15 @@ import {
   FETCH_FILMS_ERROR,
   FETCH_FILMS_SUCCESS,
   FETCH_LOADING,
+  FETCH_SERIES_SUCCESS,
+  FILTERED_SERIES,
   SEARCH_CLEAR,
   SEARCH_VALUE,
 } from "../actions/actionTypes";
 
 const InitialState = {
   films: [],
+  series: [],
   error: null,
   film: null,
   loading: false,
@@ -18,9 +21,13 @@ const InitialState = {
     value: "",
     type: "text",
   },
+
   favorites: [],
   favoritesData: [],
   currentMovieData: {},
+  filteredSeries: [],
+
+  currentSeries: [],
 };
 
 export default function filmReducer(state = InitialState, action) {
@@ -36,12 +43,26 @@ export default function filmReducer(state = InitialState, action) {
         loading: false,
         films: action.films,
       };
+    case FETCH_SERIES_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        series: action.series,
+      };
     case FETCH_FILMS_ERROR:
       return {
         ...state,
         loading: false,
         error: action.error,
       };
+    case FILTERED_SERIES:
+      return {
+        ...state,
+        loading: false,
+        filteredSeries: action.filteredSeries,
+        tvSeries: action.tvSeries,
+      };
+
     case SEARCH_CLEAR:
       return {
         ...state,
