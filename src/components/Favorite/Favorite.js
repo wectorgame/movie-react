@@ -2,6 +2,7 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { fetchMovies } from "../../store/actions/films";
 import { FilmCard } from "../FilmCard/FilmCard";
+import SeriesCard from "../SeriesCard/SeriesCard";
 import Loader from "../UI/Loader/Loader";
 
 class Favorite extends Component {
@@ -11,19 +12,28 @@ class Favorite extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Favorites</h1>
+      <div >
         <div className="row">
-          {this.props.loading && this.props.films.favorites !== 0 ? (
+          {this.props.loading && this.props.favorites.length !== 0 ? (
             <Loader></Loader>
           ) : (
-            this.props.favoritesData.map((film) => {
-              return (
-                <div className="col-sm-4 mb-4" key={film.id}>
-                  <FilmCard film={film}></FilmCard>
-                </div>
-              );
-            })
+            <>
+              {this.props.favoritesDataFilms.map((film) => {
+                return (
+                  <div className="col-sm-3 mb-4" key={film.id}>
+                    <FilmCard film={film}></FilmCard>
+                  </div>
+                );
+              })}
+              ,
+              {this.props.favoritesDataTvSeries.map((series) => {
+                return (
+                  <div className="col-sm-3 mb-4" key={series.id}>
+                    <SeriesCard series={series}></SeriesCard>
+                  </div>
+                );
+              })}
+            </>
           )}
         </div>
       </div>
@@ -31,9 +41,11 @@ class Favorite extends Component {
   }
 }
 function mapStateToProps(state) {
+  console.log(state.film);
   return {
     favorites: state.film.favorites,
-    favoritesData: state.film.favoritesData,
+    favoritesDataTvSeries: state.film.favoritesDataTvSeries,
+    favoritesDataFilms: state.film.favoritesDataFilms,
   };
 }
 function mapDispatchToProps(dispatch) {

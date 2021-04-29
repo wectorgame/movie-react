@@ -92,7 +92,7 @@ class Films extends Component {
             this.props.films.map((film) => {
               return (
                 <div className="col-sm-4 mb-4" key={film.id}>
-                  <FilmCard film={film}></FilmCard>
+                  <FilmCard film={film} series={false}></FilmCard>
                 </div>
               );
             })

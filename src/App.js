@@ -11,6 +11,7 @@ import Logout from "./components/Logout/Logout";
 import Series from "./components/Series/Series";
 import Favorite from "./components/Favorite/Favorite";
 import Film from "./components/Film/Film";
+import SeriesProfile from "./components/SeriesProfile/SeriesProfile";
 class App extends Component {
   componentDidMount() {
     this.props.autoLogin();
@@ -28,7 +29,8 @@ class App extends Component {
           <Route path="/films" component={Films} exact />
           <Route path="/series" component={Series} />
           <Route path="/favorite" component={Favorite} />
-          <Route path="/profile/:name" component={Film}></Route>
+          <Route path="/profile/movies/:name" component={Film}></Route>
+          <Route path="/profile/series/:name" component={SeriesProfile}></Route>
           <Route path="/logout" component={Logout}></Route>
           <Redirect to="/films" component={Films} exact></Redirect>
         </Switch>

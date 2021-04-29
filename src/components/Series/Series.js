@@ -7,9 +7,9 @@ import {
   fetchSeriesByDate,
   searchValue,
 } from "../../store/actions/films";
-import { FilmCard } from "../FilmCard/FilmCard";
 import Loader from "../UI/Loader/Loader";
 import Select from "../UI/Select/Select";
+import  SeriesCard from "../SeriesCard/SeriesCard"
 
 class Series extends Component {
   async componentDidMount() {
@@ -96,7 +96,7 @@ class Series extends Component {
             currentSeries.map((series) => {
               return (
                 <div className="col-sm-4 mb-4" key={series.id}>
-                  <FilmCard film={series}></FilmCard>
+                  < SeriesCard  series={series} ></ SeriesCard>
                 </div>
               );
             })

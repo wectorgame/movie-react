@@ -49,12 +49,15 @@ export function fetchSearchFilms(value, isSeries = false) {
     }
   };
 }
-export function fetchMovie(id) {
+export function fetchMovie(id, isSeries = false) {
   return async (dispatch) => {
     dispatch(fetchLoading());
+    let url = `https://api.themoviedb.org/3/movie/${id}?api_key=${api_key}`;
+    if (isSeries)
+      url = `https://api.themoviedb.org/3/tv/${id}?api_key=${api_key}`;
     try {
-      const response = await axios.get(`
-      https://api.themoviedb.org/3/movie/${id}?api_key=${api_key}`);
+      const response = await axios.get(url);
+
       dispatch({ type: CURR_MOVIE_DATA, movieData: response.data });
     } catch (e) {
       dispatch(fetchFilmsError(e));
@@ -64,15 +67,33 @@ export function fetchMovie(id) {
 export function fetchMovies(movies = []) {
   return async (dispatch) => {
     dispatch(fetchLoading());
+    const tvSeries = movies
+      .filter((elem) => elem.isSeries)
+      .map((elem) => elem.movie);
+    const films = movies
+      .filter((elem) => !elem.isSeries)
+      .map((elem) => elem.movie);
     try {
-      const responses = await Promise.all(
-        movies.map((id) =>
+      const responseTvSeries = await Promise.all(
+        tvSeries.map((id) =>
+          axios.get(`
+https://api.themoviedb.org/3/tv/${id}?api_key=${api_key}`)
+        )
+      );
+      const responseFilms = await Promise.all(
+        films.map((id) =>
           axios.get(`
 https://api.themoviedb.org/3/movie/${id}?api_key=${api_key}`)
         )
       );
-      const data = responses.map((elem) => elem.data);
-      dispatch({ type: FAVORITES_DATA, favoritesData: data });
+
+      const dataTvSeries = responseTvSeries.map((elem) => elem.data);
+      const dataFilms = responseFilms.map((elem) => elem.data);
+      dispatch({
+        type: FAVORITES_DATA,
+        favoritesDataFilms: dataFilms,
+        favoritesDataTvSeries: dataTvSeries,
+      });
     } catch (e) {
       dispatch(fetchFilmsError(e));
     }
@@ -123,8 +144,8 @@ export function fetchSeriesByDate(date, tvSeries) {
 export function fetchFilteredSeries(filteredSeries, tvSeries) {
   return { type: FILTERED_SERIES, filteredSeries, tvSeries };
 }
-export function addFavorites(movie) {
-  return { type: ADD_TO_FAVORITE, currentMovie: movie };
+export function addFavorites(movie, isSeries = false) {
+  return { type: ADD_TO_FAVORITE, currentMovie: { movie, isSeries } };
 }
 export function searchValue(value) {
   return { type: SEARCH_VALUE, value };

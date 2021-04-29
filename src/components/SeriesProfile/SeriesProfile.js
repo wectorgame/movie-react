@@ -1,12 +1,9 @@
-import { Button } from "@material-ui/core";
-
 import { Component } from "react";
 import { connect } from "react-redux";
-import error from "../../images/error.png";
 import { addFavorites, fetchMovie } from "../../store/actions/films";
-import "./Film.scss";
-
-class Film extends Component {
+import error from "../../images/error.png";
+import { Button } from "@material-ui/core";
+class SeriesProfile extends Component {
   async componentDidMount() {
     this.props.fetchMovie(this.props.match.params.name);
   }
@@ -29,7 +26,7 @@ class Film extends Component {
           ></img>
           <h1 className="display-5 fw-bold">{this.props.data.title}</h1>
           <h5 className="col-md-8 fs-4">
-            Date release: {this.props.data.release_date}
+            Date release: {this.props.data.first_air_date}
           </h5>
           <p className="col-md-8 fs-4">{this.props.data.overview}</p>
 
@@ -59,8 +56,8 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    fetchMovie: (id) => dispatch(fetchMovie(id)),
-    addFavorites: (movie) => dispatch(addFavorites(movie)),
+    fetchMovie: (id) => dispatch(fetchMovie(id, true)),
+    addFavorites: (movie) => dispatch(addFavorites(movie, true)),
   };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Film);
+export default connect(mapStateToProps, mapDispatchToProps)(SeriesProfile);

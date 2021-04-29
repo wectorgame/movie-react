@@ -23,7 +23,8 @@ const InitialState = {
   },
 
   favorites: [],
-  favoritesData: [],
+  favoritesDataTvSeries: [],
+  favoritesDataFilms: [],
   currentMovieData: {},
   filteredSeries: [],
 
@@ -91,7 +92,8 @@ export default function filmReducer(state = InitialState, action) {
     case FAVORITES_DATA:
       return {
         ...state,
-        favoritesData: action.favoritesData,
+        favoritesDataTvSeries: action.favoritesDataTvSeries,
+        favoritesDataFilms: action.favoritesDataFilms,
       };
     default:
       return state;
